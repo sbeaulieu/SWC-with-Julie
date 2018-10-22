@@ -1,0 +1,25 @@
+---
+title: "Test data wrangling"
+author: "Stace Beaulieu"
+date: "October 22, 2018"
+output: html_document
+---
+
+```{r}
+library(tidyverse) # install.packages("tidyverse")
+```
+
+```{r}
+gapminder <- readr::read_csv('https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/gapminder.csv')
+```
+
+```{r}
+install.packages("skimr")
+skimr::skim(gapminder)
+```
+
+```{r}
+dim(gapminder)
+
+```
+

@@ -8,14 +8,115 @@ output: html_document
 
 # Learning ggplot2
 
-We're learning ggplot2 It's going to be amazing. 
+First install tidyverse and load tidyverse library 
 
+```{r first_need_tidyverse}
+install.packages("tidyverse")
+library(tidyverse)
+```
 
+Load some data to play with.
 
-```{r cars, echo=FALSE}
-summary(cars)
+```{r script_from_Google_doc}
+#National Parks in California
+ca <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/ca.csv") 
+
+#Acadia National Park
+acadia <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/acadia.csv")
+
+#Southeast US National Parks
+se <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/se.csv")
+
+#2016 Visitation for all Pacific West National Parks
+visit_16 <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/visit_16.csv")
+
+#All Nationally designated sites in Massachusetts
+mass <- read_csv("https://raw.githubusercontent.com/OHI-Science/data-science-training/master/data/mass.csv")
+
+```
+Start with the California data set
+
+```{r}
+head(ca) # shows top few rows
+View(ca) # useful to look at tabular data
+```
+
+```{r}
+ggplot(data = ca) + # tell ggplot what data to use
+  geom_point(aes(x = year, y = visitors)) # tell what type of geom and what type aesthetic
 ```
 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code
+```{r}
+ggplot(data = ca) + # tell ggplot what data to use
+  geom_point(aes(x = year, y = visitors, color = park_name)) # tell what type of geom and what type aesthetic
+```
+
+```{r}
+ggplot(data = ca) + # tell ggplot what data to use
+  geom_point(aes(x = year, y = visitors, color = park_name)) + # tell what type of geom and what type aesthetic
+  labs(title = "California National Park Visitation") +
+  theme(legend.title = element_blank())
+```
+
+```{r}
+View(se) # useful to look at tabular data
+```
+
+```{r}
+ggplot(data = se) + # tell ggplot what data to use
+  geom_point(aes(x = year, y = visitors, color = state)) + # tell what type of geom and what type aesthetic
+  labs(title = "Southeast National Park Visitation") +
+  theme(axis.text.x=element_text(angle=45))
+```
+
+```{r}
+ggplot(data = se) +
+  geom_point(aes(x = year, y = visitors, color = state)) +
+  labs(x = "Year",
+       y = "Visitation",
+       title = "Southeast States National Park Visitation") +
+  theme_light() +
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45, hjust = 1, size = 14))
+```
+
+```{r}
+ggplot(data = se) +
+    geom_point(aes(x = year, y = visitors, color = park_name)) +
+    facet_wrap(~ state, scales = "free") +
+    theme(legend.position = "bottom")
+```
+
+```{r}
+ggplot(se, aes(x = park_name, y = visitors)) + 
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+ggplot(se, aes(x = year, y = visitors, color = park_name)) +
+   geom_line()
+```
+
+```{r}
+ggplot(data = acadia, aes(x = year, y = visitors)) + 
+  geom_point() +
+  geom_line() +
+  geom_smooth(color = "red") +
+  labs(title = "Acadia National Park Visitation",
+       y = "Visitation",
+       x = "Year") +
+  theme_bw()
+?geom_smooth
+```
+
+```{r}
+my_plot <- ggplot(data = visit_16, aes(x = state, y = visitors, fill = park_name)) + 
+  geom_bar(stat = "identity")
+
+my_plot
+ggsave(filename = "test_plot_image.png", my_plot, dpi = 300)
+
+```
 
