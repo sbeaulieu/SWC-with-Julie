@@ -19,7 +19,39 @@ skimr::skim(gapminder)
 ```
 
 ```{r}
-dim(gapminder)
+# filter by rows
+gap_Cambodia <- filter(gapminder, country == "Cambodia")
+gap_Cambodia2 <- select(gap_Cambodia, -continent, -lifeExp)
+
+```
+
+The pipe operator (which does not look like a pipe symbol!) will change your life
+
+```{r}
+# this:
+gapminder %>% head()
+# is equivalent to
+head(gapminder)
+# now go back to Cambodia example
+gap_Cambodia <- gapminder %>%
+  filter(country == "Cambodia") %>%
+  select(-continent, -lifeExp)
+gap_Cambodia
+```
+
+```{r}
+gapminder %>%
+  select(-continent, -lifeExp) %>% # not super necessary but to simplify
+  filter(country == "Egypt") %>%
+  mutate(gdp = pop * gdpPercap) %>%
+  mutate(max_gdp = max(gdp))
+
+## you can also create multiple variables within the same mutate(), and line them up so they are easier to read:
+gapminder %>%
+  select(-continent, -lifeExp) %>% # not super necessary but to simplify
+  filter(country == "Vietnam") %>% 
+  mutate(gdp     = pop * gdpPercap,
+         max_gdp = max(gdp))
 
 ```
 
