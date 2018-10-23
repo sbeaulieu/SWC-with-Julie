@@ -55,3 +55,22 @@ gapminder %>%
 
 ```
 
+```{r}
+gapminder %>%
+  group_by(country) %>%
+  mutate(gdp     = pop * gdpPercap,
+         max_gdp = max(gdp)) %>%
+  ungroup() %>% 
+  tail(30)
+
+# with summarize() or summarise()
+gapminder %>%
+  group_by(country) %>%
+  mutate(gdp = pop * gdpPercap) %>%
+  summarize(max_gdp = max(gdp)) %>%
+  ungroup() %>%
+  arrange(desc(max_gdp))
+  tail(30)
+  
+```
+
